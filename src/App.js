@@ -22,32 +22,48 @@ const App = () => {
     );
 
     let floor = Matter.Bodies.rectangle(
-        Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50, { isStatic: true }
-    )
+      Constants.MAX_WIDTH / 2,
+      Constants.MAX_HEIGHT - 25,
+      Constants.MAX_WIDTH,
+      50,
+      {isStatic: true},
+    );
 
     let ceiling = Matter.Bodies.rectangle(
-        Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50, { isStatic: true }
-    )
+      Constants.MAX_WIDTH / 2,
+      25,
+      Constants.MAX_WIDTH,
+      50,
+      {isStatic: true},
+    );
 
     Matter.World.add(world, [cat, floor]);
 
     return {
       physics: {engine: engine, world: world},
       cat: {body: cat, size: [50, 50], color: 'red', renderer: Cat},
-      floor: {body: floor, size: [Constants.MAX_WIDTH, 50], color: 'green', renderer: Wall},
-      ceiling: {body: ceiling, size: [Constants.MAX_WIDTH, 50], color: 'green', renderer: Wall},
+      floor: {
+        body: floor,
+        size: [Constants.MAX_WIDTH, 50],
+        color: 'green',
+        renderer: Wall,
+      },
+      ceiling: {
+        body: ceiling,
+        size: [Constants.MAX_WIDTH, 50],
+        color: 'green',
+        renderer: Wall,
+      },
     };
   };
 
   return (
-    <View>
       <GameEngine
         ref={gameEngine}
         style={styles.gameContainer}
         systems={[Physics]}
         entities={setupWorld()}
       />
-    </View>
   );
 };
 
