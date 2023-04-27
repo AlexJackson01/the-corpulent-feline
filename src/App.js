@@ -1,4 +1,4 @@
-import React, {Component, useRef} from 'react';
+import React, {Component, useRef, useState} from 'react';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
 import {StyleSheet, View} from 'react-native';
@@ -26,11 +26,24 @@ const generateBuildings = () => {
 };
 
 const App = () => {
-  const gameEngine = useRef(null);
+    const [running, setRunning] = useState(true)
+  const [gameEngine, setGameEngine] = useState(null);
 
   const setupWorld = () => {
     let engine = Matter.Engine.create({enableSleeping: false});
     let world = engine.world;
+
+    // Matter.Events.on(engine, "collisionStart", (event) => {
+    //     let pairs = event.pairs
+
+    //     console.log(gameEngine.dispatch())
+    // })
+
+    // onEvent = (e) => {
+    //     if (e.type === 'gameOver') {
+    //         setRunning(false)
+    //     }
+    // }
 
     let cat = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH / 4,
@@ -95,7 +108,9 @@ const App = () => {
       building2,
       building3,
       building4,
-    ]);
+    ])
+
+
 
     return {
       physics: {engine: engine, world: world},
@@ -136,14 +151,22 @@ const App = () => {
         color: 'yellow',
         renderer: Wall,
       },
-    };
+    }
   };
 
   return (
     <GameEngine
-      ref={gameEngine}
+      ref={(ref) => setGameEngine(ref)}
       style={styles.gameContainer}
       systems={[Physics]}
+      running={running}
+      onEvent={(e) => {
+        switch (e.type) {
+            case 'game_over':
+                setRunning(false)
+                gameEngine.stop()
+        }
+      }}
       entities={setupWorld()}
     />
   );
