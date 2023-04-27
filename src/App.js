@@ -1,7 +1,7 @@
 import React, {Component, useRef, useState} from 'react';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Constants from './Constants';
 import Cat from './Cat';
 import Wall from './Wall';
@@ -154,7 +154,13 @@ const App = () => {
     }
   };
 
+  const reset = () => {
+    gameEngine.swap(setupWorld())
+    setRunning(true)
+  }
+
   return (
+    <>
     <GameEngine
       ref={(ref) => setGameEngine(ref)}
       style={styles.gameContainer}
@@ -169,6 +175,14 @@ const App = () => {
       }}
       entities={setupWorld()}
     />
+    {!running && (
+        <TouchableOpacity onPress={() => reset()} style={styles.fullScreenButton}>
+            <View style={styles.fullScreen}>
+                <Text style={styles.gameOverText}>Game Over</Text>
+            </View>
+        </TouchableOpacity>
+    )}
+    </>
   );
 };
 
@@ -177,6 +191,36 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
+  gameContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  fullScreenButton: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 1
+  },
+  fullScreen: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#000',
+    opacity: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  gameOverText: {
+    color: '#fff',
+    fontSize: 40
+  }
 });
 
 export default App;
