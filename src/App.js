@@ -8,21 +8,22 @@ import Wall from './Wall';
 import Physics from './Physics';
 
 const randomNumber = (min, max) => {
-    return Math.floor(Math.random() * (min - max + 1) + min)
-}
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
 
 const generateBuildings = () => {
-    let topBuildingHeight = randomNumber(100, (Constants.MAX_HEIGHT / 2) - 100)
-    let bottomBuildingHeight = Constants.MAX_HEIGHT - topBuildingHeight - Constants.GAP_SIZE
+  let topBuildingHeight = randomNumber(100, Constants.MAX_HEIGHT / 2 - 100);
+  let bottomBuildingHeight =
+    Constants.MAX_HEIGHT - topBuildingHeight - Constants.GAP_SIZE;
 
-    let sizes = [topBuildingHeight, bottomBuildingHeight]
+  let sizes = [topBuildingHeight, bottomBuildingHeight];
 
-        if (Math.random() < 0.5) {
-            sizes = sizes.reverse()
-        }
+  if (Math.random() < 0.5) {
+    sizes = sizes.reverse();
+  }
 
-    return sizes;
-}
+  return sizes;
+};
 
 const App = () => {
   const gameEngine = useRef(null);
@@ -54,16 +55,47 @@ const App = () => {
       {isStatic: true},
     );
 
-    let [building1Height, building2Height] = generateBuildings()
-    let building1 = Matter.Bodies.rectangle( Constants.MAX_WIDTH - (Constants.BUILDING_WIDTH / 2), building1Height, Constants.BUILDING_WIDTH, building1Height, {isStatic: true}  )
-    let building2 = Matter.Bodies.rectangle( Constants.MAX_WIDTH - (Constants.BUILDING_WIDTH / 2), Constants.MAX_HEIGHT - (building2Height / 2), Constants.BUILDING_WIDTH, building2Height, {isStatic: true}  )
+    let [building1Height, building2Height] = generateBuildings();
+    let building1 = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH - Constants.BUILDING_WIDTH / 2,
+      building1Height / 2,
+      Constants.BUILDING_WIDTH,
+      building1Height,
+      {isStatic: true},
+    );
+    let building2 = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH - Constants.BUILDING_WIDTH / 2,
+      Constants.MAX_HEIGHT - building2Height / 2,
+      Constants.BUILDING_WIDTH,
+      building2Height,
+      {isStatic: true},
+    );
 
-    let [building3Height, building4Height]= generateBuildings()
-    let building3 = Matter.Bodies.rectangle( Constants.MAX_WIDTH * 2 - (Constants.BUILDING_WIDTH / 2), building3Height, Constants.BUILDING_WIDTH, building3Height, {isStatic: true}  )
-    let building4 = Matter.Bodies.rectangle( Constants.MAX_WIDTH * 2 - (Constants.BUILDING_WIDTH / 2), Constants.MAX_HEIGHT - (building4Height / 2), Constants.BUILDING_WIDTH, building4Height, {isStatic: true}  )
+    let [building3Height, building4Height] = generateBuildings();
+    let building3 = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH * 2 - Constants.BUILDING_WIDTH / 2,
+      building3Height / 2,
+      Constants.BUILDING_WIDTH,
+      building3Height,
+      {isStatic: true},
+    );
+    let building4 = Matter.Bodies.rectangle(
+      Constants.MAX_WIDTH * 2 - Constants.BUILDING_WIDTH / 2,
+      Constants.MAX_HEIGHT - building4Height / 2,
+      Constants.BUILDING_WIDTH,
+      building4Height,
+      {isStatic: true},
+    );
 
-
-    Matter.World.add(world, [cat, floor, ceiling, building1, building2, building3, building4]);
+    Matter.World.add(world, [
+      cat,
+      floor,
+      ceiling,
+      building1,
+      building2,
+      building3,
+      building4,
+    ]);
 
     return {
       physics: {engine: engine, world: world},
@@ -87,19 +119,19 @@ const App = () => {
         renderer: Wall,
       },
       building2: {
-        body: building1,
+        body: building2,
         size: [Constants.BUILDING_WIDTH, building2Height],
         color: 'yellow',
         renderer: Wall,
       },
       building3: {
-        body: building1,
+        body: building3,
         size: [Constants.BUILDING_WIDTH, building3Height],
         color: 'yellow',
         renderer: Wall,
       },
       building4: {
-        body: building1,
+        body: building4,
         size: [Constants.BUILDING_WIDTH, building4Height],
         color: 'yellow',
         renderer: Wall,
@@ -108,12 +140,12 @@ const App = () => {
   };
 
   return (
-      <GameEngine
-        ref={gameEngine}
-        style={styles.gameContainer}
-        systems={[Physics]}
-        entities={setupWorld()}
-      />
+    <GameEngine
+      ref={gameEngine}
+      style={styles.gameContainer}
+      systems={[Physics]}
+      entities={setupWorld()}
+    />
   );
 };
 
