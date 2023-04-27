@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {View} from 'react-native';
 
-const Bird = ({size, body, color}) => {
+const Wall = ({size, body, color}) => {
   const [height, setHeight] = useState(size[1]);
   const [width, setWidth] = useState(size[0]);
   const [x, setX] = useState(body.position.x - width / 2);
@@ -17,8 +17,8 @@ const Bird = ({size, body, color}) => {
         height: height,
         backgroundColor: color,
       }}>
-
+        
       </View>
   );
 };
-export default Bird;
+export default Wall;
