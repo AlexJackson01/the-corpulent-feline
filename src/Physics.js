@@ -1,14 +1,12 @@
+import React, { Component } from 'react';
 import { View } from 'react-native';
-import Matter from 'matter-js';
-import { useState } from 'react';
-        
-const Physics = (entities, { touches, time } ) => {
+import Matter from 'matter-js'
 
-    let engine = entities.physics.engine;
+const Physics = (entities, { touches, time }) => {
+    let engine = entities.physics.engine
 
-    Matter.Engine.update(engine, time.delta);
+    Matter.Engine.update(engine, time.delta)
+    return entities
+}
 
-    return entities;
-
-};
-export default Physics;
+export default Physics
