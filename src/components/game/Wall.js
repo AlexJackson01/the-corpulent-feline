@@ -16,6 +16,7 @@ class Wall extends Component {
           left: x,
           width: width,
           height: height,
+          zIndex: 1000,
           backgroundColor: this.props.color,
         }}></View>
     );

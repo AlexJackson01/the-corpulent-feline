@@ -21,6 +21,7 @@ class Cat extends Component {
           left: x,
           width: width,
           height: height,
+          
         }} 
         resizeMode='stretch'
         source={image} />
