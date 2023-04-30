@@ -4,7 +4,8 @@ import Matter from 'matter-js';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Constants from './Constants';
 import Cat from './Cat';
-import Wall from './Wall';
+import Ceiling from './Ceiling'
+import Floor from './Floor';
 import Physics from './Physics';
 
 const randomNumber = (min, max) => {
@@ -32,7 +33,7 @@ const Game = () => {
   const setupWorld = () => {
     let engine = Matter.Engine.create({enableSleeping: false});
     let world = engine.world;
-    world.gravity.y = 1.2
+    world.gravity.y = 0.0
 
     let cat = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH / 4,
@@ -52,52 +53,17 @@ const Game = () => {
 
     let ceiling = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH / 2,
-      25,
+      Constants.MAX_HEIGHT - 25,
       Constants.MAX_WIDTH,
       50,
       {isStatic: true},
     );
 
-    let [building1Height, building2Height] = generateBuildings();
-    let building1 = Matter.Bodies.rectangle(
-      Constants.MAX_WIDTH - Constants.BUILDING_WIDTH / 2,
-      building1Height / 2,
-      Constants.BUILDING_WIDTH,
-      building1Height,
-      {isStatic: true},
-    );
-    let building2 = Matter.Bodies.rectangle(
-      Constants.MAX_WIDTH - Constants.BUILDING_WIDTH / 2,
-      Constants.MAX_HEIGHT - building2Height / 2,
-      Constants.BUILDING_WIDTH,
-      building2Height,
-      {isStatic: true},
-    );
-
-    let [building3Height, building4Height] = generateBuildings();
-    let building3 = Matter.Bodies.rectangle(
-      Constants.MAX_WIDTH * 2 - Constants.BUILDING_WIDTH / 2,
-      building3Height / 2,
-      Constants.BUILDING_WIDTH,
-      building3Height,
-      {isStatic: true},
-    );
-    let building4 = Matter.Bodies.rectangle(
-      Constants.MAX_WIDTH * 2 - Constants.BUILDING_WIDTH / 2,
-      Constants.MAX_HEIGHT - building4Height / 2,
-      Constants.BUILDING_WIDTH,
-      building4Height,
-      {isStatic: true},
-    );
 
     Matter.World.add(world, [
       cat,
       floor,
       ceiling,
-      building1,
-      building2,
-      building3,
-      building4,
     ])
 
 
@@ -107,40 +73,12 @@ const Game = () => {
       cat: {body: cat, size: [50, 50], color: 'red', renderer: Cat},
       floor: {
         body: floor,
-        size: [Constants.MAX_WIDTH, 50],
-        color: 'green',
-        renderer: Wall,
+        renderer: Floor,
       },
       ceiling: {
         body: ceiling,
-        size: [Constants.MAX_WIDTH, 50],
-        color: 'green',
-        renderer: Wall,
-      },
-      building1: {
-        body: building1,
-        size: [Constants.BUILDING_WIDTH, building1Height],
-        color: 'yellow',
-        renderer: Wall,
-      },
-      building2: {
-        body: building2,
-        size: [Constants.BUILDING_WIDTH, building2Height],
-        color: 'yellow',
-        renderer: Wall,
-      },
-      building3: {
-        body: building3,
-        size: [Constants.BUILDING_WIDTH, building3Height],
-        color: 'yellow',
-        renderer: Wall,
-      },
-      building4: {
-        body: building4,
-        size: [Constants.BUILDING_WIDTH, building4Height],
-        color: 'yellow',
-        renderer: Wall,
-      },
+        renderer: Ceiling,
+      }
     }
   };
 

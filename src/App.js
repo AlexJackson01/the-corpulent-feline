@@ -10,7 +10,7 @@ import {useEffect} from 'react';
 
 const App = () => {
   useEffect(() => {
-    start();
+    // start();
   }, []);
 
   const start = async () => {
@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Start">
+      <Stack.Navigator initialRouteName="Game">
         <Stack.Screen
           name="Start"
           component={StartScreen}
