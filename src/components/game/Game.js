@@ -1,12 +1,13 @@
 import React, {Component, useRef, useState} from 'react';
 import {GameEngine} from 'react-native-game-engine';
 import Matter from 'matter-js';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Constants from './Constants';
 import Cat from './Cat';
 import Ceiling from './Ceiling'
 import Floor from './Floor';
 import Physics from './Physics';
+import Images from '../../assets/Images'
 
 const randomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -89,6 +90,7 @@ const Game = () => {
 
   return (
     <>
+    <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
     <GameEngine
       ref={(ref) => setGameEngine(ref)}
       style={styles.gameContainer}
@@ -118,6 +120,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: Constants.MAX_WIDTH,
+    height: Constants.MAX_HEIGHT
   },
   gameContainer: {
     position: 'absolute',

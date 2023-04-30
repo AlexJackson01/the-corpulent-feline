@@ -8,7 +8,7 @@ class Floor extends Component {
     const width = this.props.body.bounds.max.x;
     const height = this.props.body.bounds.max.y
     const x = this.props.body.position.x - 450;
-    const y = this.props.body.position.y - height;
+    const y = this.props.body.position.y - height + 25;
 
     const imageIterations = Math.ceil(width / height)
 
@@ -20,7 +20,7 @@ class Floor extends Component {
           left: y,
           width: width,
           height: height,
-        //   overflow: 'hidden',
+          overflow: 'hidden',
           flexDirection: 'row'
         }}>
             {Array.apply(null, Array(imageIterations)).map((el, i) => {
