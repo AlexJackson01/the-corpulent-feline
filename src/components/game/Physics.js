@@ -24,6 +24,17 @@ const Physics = (entities, {touches, time, dispatch}) => {
     dispatch({type: 'game_over'})
   })
 
+  Object.keys(entities).forEach(key => {
+    if (key.indexOf("floor") === 0) {
+      if (entities[key].body.position.x <= -1 * Constants.MAX_WIDTH / 2) {
+        Matter.Body.setPosition(entities[key].body, {x: Constants.MAX_WIDTH + (Constants.MAX_WIDTH / 2), y: entities[key].body.position.y})
+      } else {
+      Matter.Body.translate(entities[key].body, {x: -2, y: 0})
+      }
+    }
+  })
+
+
   tick += 1
   if (tick % 5 === 0) {
     pose = pose + 1

@@ -5,8 +5,8 @@ import Images from '../../assets/Images'
         
 class Clouds extends Component {
   render() {
-    const width = this.props.body.bounds.max.x;
-    const height = this.props.body.bounds.max.y
+    const width = this.props.body.bounds.max.x - this.props.body.bounds.min.x;
+    const height = this.props.body.bounds.max.y - this.props.body.bounds.min.y
     const x = this.props.body.position.x - width / 2;
     const y = this.props.body.position.y - height / 2;
 
@@ -24,7 +24,7 @@ class Clouds extends Component {
           flexDirection: 'row'
         }}>
             {Array.apply(null, Array(imageIterations)).map((el, i) => {
-                return <Image style={{width: height, height: height}} key={i} resizeMode='center' source={Images.clouds} />
+                return <Image style={{width: width, height: height}} key={i} resizeMode='contain' source={Images.clouds} />
             })}
 
         </View>

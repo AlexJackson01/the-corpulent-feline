@@ -1,5 +1,5 @@
 export default Images = {
-    clouds: require('./images/greyClouds.png'),
+    clouds: require('./images/purpleClouds2.png'),
     cloudsTop: require('./images/purpleClouds.png'),
     background: require('./images/city2.png'),
     idle1: require('./images/cat/idle1.png'),
