@@ -3,6 +3,9 @@ import {View} from 'react-native';
 import Matter from 'matter-js';
 import Constants from './Constants';
 
+let tick = 0
+let pose = 1
+
 const Physics = (entities, {touches, time, dispatch}) => {
   let engine = entities.physics.engine;
   let cat = entities.cat.body;
@@ -20,6 +23,15 @@ const Physics = (entities, {touches, time, dispatch}) => {
   Matter.Events.on(engine, 'collisionStart', (event) => {
     dispatch({type: 'game_over'})
   })
+
+  tick += 1
+  if (tick % 5 === 0) {
+    pose = pose + 1
+    if (pose > 10) {
+      pose = 1
+    }
+    entities.cat.pose = pose;
+  }
 
   return entities;
 };

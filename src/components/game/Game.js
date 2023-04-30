@@ -39,8 +39,8 @@ const Game = () => {
     let cat = Matter.Bodies.rectangle(
       Constants.MAX_WIDTH / 4,
       Constants.MAX_HEIGHT / 2,
-      50,
-      50,
+      Constants.CAT_WIDTH,
+      Constants.CAT_HEIGHT,
     );
     cat.restitution = 20
 
@@ -71,7 +71,7 @@ const Game = () => {
 
     return {
       physics: {engine: engine, world: world},
-      cat: {body: cat, size: [50, 50], color: 'red', renderer: Cat},
+      cat: {body: cat, pose: 1, renderer: Cat},
       floor: {
         body: floor,
         renderer: Floor,
