@@ -16,23 +16,6 @@ import Clouds from './Clouds';
 import Physics from './Physics';
 import Images from '../../assets/Images';
 
-const randomNumber = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-const generateBuildings = () => {
-  let topBuildingHeight = randomNumber(100, Constants.MAX_HEIGHT / 2 - 100);
-  let bottomBuildingHeight =
-    Constants.MAX_HEIGHT - topBuildingHeight - Constants.GAP_SIZE;
-
-  let sizes = [topBuildingHeight, bottomBuildingHeight];
-
-  if (Math.random() < 0.5) {
-    sizes = sizes.reverse();
-  }
-
-  return sizes;
-};
 
 const Game = () => {
   const [running, setRunning] = useState(true);
@@ -203,7 +186,8 @@ const styles = StyleSheet.create({
   },
   gameOverText: {
     color: '#fff',
-    fontSize: 40,
+    fontSize: 40,  
+    fontFamily: 'Squartiqa4FLight',
   },
 });
 

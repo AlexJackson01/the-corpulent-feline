@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Game">
+      <Stack.Navigator initialRouteName="Start">
         <Stack.Screen
           name="Start"
           component={StartScreen}
