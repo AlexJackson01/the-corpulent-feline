@@ -13,13 +13,14 @@ import Constants from './Constants';
 import Cat from './Cat';
 import Wall from './Wall';
 import Clouds from './Clouds';
-import Physics from './Physics';
+import Physics, { resetPipes } from './Physics';
 import Images from '../../assets/Images';
 
 
 const Game = () => {
   const [running, setRunning] = useState(true);
   const [gameEngine, setGameEngine] = useState(null);
+  const [score, setScore] = useState(0)
 
   const setupWorld = () => {
     let engine = Matter.Engine.create({
@@ -106,6 +107,7 @@ const Game = () => {
   };
 
   const reset = () => {
+    resetPipes()
     gameEngine.swap(setupWorld());
     setRunning(true);
   };
@@ -127,16 +129,22 @@ const Game = () => {
             case 'game_over':
               setRunning(false);
               gameEngine.stop();
+              break;
+            case 'score':
+              setScore(score => score + 1)
           }
         }}
         entities={setupWorld()}
       />
+      <Text style={styles.score}>{score}</Text>
       {!running && (
         <TouchableOpacity
           onPress={() => reset()}
           style={styles.fullScreenButton}>
           <View style={styles.fullScreen}>
             <Text style={styles.gameOverText}>Game Over</Text>
+            <Text style={styles.gameOverSubText}>Try Again</Text>
+
           </View>
         </TouchableOpacity>
       )}
@@ -189,6 +197,22 @@ const styles = StyleSheet.create({
     fontSize: 40,  
     fontFamily: 'Squartiqa4FLight',
   },
+  gameOverSubText: {
+    color: '#fff',
+    fontSize: 24,  
+    fontFamily: 'Squartiqa4FLight',
+  },
+  score: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 40,  
+    fontFamily: 'Squartiqa4FLight',
+    top: 50,
+    left: Constants.MAX_WIDTH / 2 - 20,
+    textShadowColor: '#444444',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 2
+  }
 });
 
 export default Game;

@@ -14,6 +14,10 @@ const randomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+export const resetPipes = () => {
+  pipes = 0;
+};
+
 const generateObstacles = () => {
   let topObstHeight = randomNumber(100, Constants.MAX_HEIGHT / 2 - 100);
   let bottomObstHeight =
@@ -99,21 +103,25 @@ export const addObstaclesAtLocation = (x, world, entities) => {
   entities['obstacle' + (obstacles + 1)] = {
     body: obst1,
     renderer: Obstacle,
+    scored: false
   };
 
   entities['obstacle' + (obstacles + 2)] = {
     body: obst2,
     renderer: Obstacle,
+    scored: false
   };
 
   entities['obstacle' + (obstacles + 1) + 'End'] = {
     body: obst1End,
     renderer: ObstacleEndTop,
+    scored: false
   };
 
   entities['obstacle' + (obstacles + 2) + 'End'] = {
     body: obst2End,
     renderer: ObstacleEndBottom,
+    scored: false
   };
 
   obstacles += 2;
@@ -156,22 +164,28 @@ const Physics = (entities, {touches, time, dispatch}) => {
   });
 
   Object.keys(entities).forEach(key => {
-    if (key.indexOf('obst') === 0) {
+    if (key.indexOf('obstacle') === 0 && entities.hasOwnProperty(key)) {
       Matter.Body.translate(entities[key].body, {x: -2, y: 0});
 
       if (
         key.indexOf('End') !== -1 &&
-        parseInt(key.replace('obst', '')) % 2 === 0
+        parseInt(key.replace('obstacle', '')) % 2 === 0
       ) {
+
+        if (entities[key].body.position.x <= cat.position.x && !entities[key].scored ) {
+          entities[key].scored = true
+          dispatch({type: 'score'})
+        }
+
         if (
           entities[key].body.position.x <=
           -1 * (Constants.OBSTACLE_WIDTH / 2)
         ) {
-          let obstIndex = parseInt(key.replace('obst', ''));
-          delete entities['obst' + (obstIndex - 1) + 'End'];
-          delete entities['obst' + (obstIndex - 1)];
-          delete entities['obst' + obstIndex + 'End'];
-          delete entities['obst' + obstIndex];
+          let obstIndex = parseInt(key.replace('obstacle', ''));
+          delete entities['obstacle' + (obstIndex - 1) + 'End'];
+          delete entities['obstacle' + (obstIndex - 1)];
+          delete entities['obstacle' + obstIndex + 'End'];
+          delete entities['obstacle' + obstIndex];
 
           addObstaclesAtLocation(
             Constants.MAX_WIDTH * 2 - Constants.OBSTACLE_WIDTH / 2,
