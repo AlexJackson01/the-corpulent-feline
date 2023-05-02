@@ -38,8 +38,7 @@ const Game = () => {
       Constants.CAT_HEIGHT,
       {
         collisionFilter: {
-          group: 1,
-          mask: 0,
+          group: 1
         },
       },
     );
@@ -135,6 +134,10 @@ const Game = () => {
               break;
             case 'score':
               setScore(score => score + 1)
+              break;
+            case 'power_up':
+              setScore(score => score +5)
+              break;
           }
         }}
         entities={setupWorld()}

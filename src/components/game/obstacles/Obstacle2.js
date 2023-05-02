@@ -1,8 +1,8 @@
 import React, {Component, useState} from 'react';
 import {View, Image} from 'react-native';
-import Images from '../../assets/Images';
-        
-class Obstacle extends Component {
+import Images from '../../../assets/Images';
+
+class Obstacle2 extends Component {
   render() {
     const width = this.props.body.bounds.max.x - this.props.body.bounds.min.x;
     const height = this.props.body.bounds.max.y - this.props.body.bounds.min.y;
@@ -10,8 +10,8 @@ class Obstacle extends Component {
     const y = this.props.body.position.y - height / 2;
 
     const obstacleRatio = 32 / width;
-    const obstacleHeight = 32 * obstacleRatio
-    const obstacleIterations = Math.ceil(height / obstacleHeight)
+    const obstacleHeight = 100 * obstacleRatio;
+    const obstacleIterations = Math.ceil(height / obstacleHeight);
 
     return (
       <View
@@ -23,23 +23,23 @@ class Obstacle extends Component {
           height: height,
           zIndex: 1000,
           overflow: 'hidden',
-          flexDirection: 'column'
+          flexDirection: 'column',
         }}>
-        {Array.apply(null, Array(obstacleIterations)).map((el, i) => {
-          return (
-            <Image
-              style={{width: width, height: obstacleHeight}}
-              key={i}
-              resizeMode="stretch"
-              source={Images.pipe}
-            />
-          );
-        })}
-
-
-        </View>
+          {
+            Array.apply(null, Array(obstacleIterations)).map((el, i) => {
+              return (
+                <Image
+                  style={{width: width, height: obstacleHeight}}
+                  key={i}
+                  resizeMode="stretch"
+                  source={Images.pipe2}
+                />
+              );
+            })
+          }
+      </View>
     );
   }
 }
 
-export default Obstacle;
+export default Obstacle2;

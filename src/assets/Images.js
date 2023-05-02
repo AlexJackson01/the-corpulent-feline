@@ -12,7 +12,9 @@ export default Images = {
     idle8: require('./images/cat/idle8.png'),
     idle9: require('./images/cat/idle9.png'),
     idle10: require('./images/cat/idle10.png'),
-    pipe: require('./images/pipe.png'),
-    pipeEndTop: require('./images/pipeEndTop.png'),
-    pipeEndBottom: require('./images/pipeEndBottom.png')
+    pipe1: require('./images/pipes/pipe1.png'),
+    pipe2: require('./images/pipes/pipe2.png'),
+    pipeEndTop: require('./images/pipes/pipeEndTop.png'),
+    pipeEndBottom: require('./images/pipes/pipeEndBottom.png'),
+    power1: require('./images/power/power1.png')
 }

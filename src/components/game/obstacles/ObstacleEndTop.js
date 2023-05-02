@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import {View, Image} from 'react-native';
-import Images from '../../assets/Images';
+import Images from '../../../assets/Images';
 
 class ObstacleEndTop extends Component {
 
@@ -19,7 +19,7 @@ class ObstacleEndTop extends Component {
           width: width,
           height: height,
         }} 
-        resizeMode='stretch'
+        resizeMode='contain'
         source={Images.pipeEndTop} />
     );
   }
