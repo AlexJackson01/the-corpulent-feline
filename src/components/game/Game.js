@@ -21,6 +21,7 @@ const Game = () => {
   const [running, setRunning] = useState(true);
   const [gameEngine, setGameEngine] = useState(null);
   const [score, setScore] = useState(0)
+  const [bestScore, setBestScore] = useState(0)
 
   const setupWorld = () => {
     let engine = Matter.Engine.create({
@@ -108,6 +109,8 @@ const Game = () => {
 
   const reset = () => {
     resetPipes()
+    setBestScore(score)
+    setScore(0)
     gameEngine.swap(setupWorld());
     setRunning(true);
   };
@@ -137,6 +140,7 @@ const Game = () => {
         entities={setupWorld()}
       />
       <Text style={styles.score}>{score}</Text>
+      {bestScore > 0 && (<Text style={styles.bestScore}>Best: {bestScore}</Text>)}
       {!running && (
         <TouchableOpacity
           onPress={() => reset()}
@@ -209,6 +213,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Squartiqa4FLight',
     top: 50,
     left: Constants.MAX_WIDTH / 2 - 20,
+    textShadowColor: '#444444',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 2
+  },
+  bestScore: {
+    position: 'absolute',
+    color: '#fff',
+    fontSize: 15,  
+    fontFamily: 'Squartiqa4FLight',
+    top: 100,
+    textAlign: 'center',
+    left: Constants.MAX_WIDTH / 2 - 35,
     textShadowColor: '#444444',
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 2
