@@ -15,11 +15,11 @@ const randomNumber = (min, max) => {
 };
 
 const generateObstacles = () => {
-  let topBuildingHeight = randomNumber(100, Constants.MAX_HEIGHT / 2 - 100);
-  let bottomBuildingHeight =
-    Constants.MAX_HEIGHT - topBuildingHeight - Constants.GAP_SIZE;
+  let topObstHeight = randomNumber(100, Constants.MAX_HEIGHT / 2 - 100);
+  let bottomObstHeight =
+    Constants.MAX_HEIGHT - topObstHeight - Constants.GAP_SIZE;
 
-  let sizes = [topBuildingHeight, bottomBuildingHeight];
+  let sizes = [topObstHeight, bottomObstHeight];
 
   if (Math.random() < 0.5) {
     sizes = sizes.reverse();
@@ -31,20 +31,23 @@ const generateObstacles = () => {
 export const addObstaclesAtLocation = (x, world, entities) => {
   let [obst1Height, obst2Height] = generateObstacles();
 
-  let obstTopWidth = Constants.OBSTACLE_WIDTH + 20;
-  let obstTopHeight = (obstTopWidth / 32) * 32;
+  let obstEndWidth = Constants.OBSTACLE_WIDTH + 20;
+  let obstEndHeight = (obstEndWidth / 32) * 32;
 
-  obst1Height = obst1Height - obstTopHeight;
+  obst1Height = obst1Height - obstEndHeight;
 
-  let obst1Top = Matter.Bodies.rectangle(
+  let obst1End = Matter.Bodies.rectangle(
     x,
-    obst1Height + obstTopHeight / 2,
-    obstTopWidth,
-    obstTopHeight,
-    {isStatic: true, collisionFilter: {
-      group: 1,
-      mask: 0
-    }},
+    obst1Height + obstEndHeight / 2,
+    obstEndWidth,
+    obstEndHeight,
+    {
+      isStatic: true,
+      collisionFilter: {
+        group: 1,
+        mask: 0,
+      },
+    },
   );
 
   let obst1 = Matter.Bodies.rectangle(
@@ -52,37 +55,46 @@ export const addObstaclesAtLocation = (x, world, entities) => {
     obst1Height / 2,
     Constants.OBSTACLE_WIDTH,
     obst1Height,
-    {isStatic: true, collisionFilter: {
-      group: 1,
-      mask: 0
-    }},
+    {
+      isStatic: true,
+      collisionFilter: {
+        group: 1,
+        mask: 0,
+      },
+    },
   );
 
-  obst2Height = obst2Height - obstTopHeight;
+  obst2Height = obst2Height - obstEndHeight;
 
-  let obst2Top = Matter.Bodies.rectangle(
+  let obst2End = Matter.Bodies.rectangle(
     x,
-    Constants.MAX_HEIGHT - 50 - obst2Height - obstTopHeight / 2,
-    obstTopWidth,
-    obstTopHeight,
-    {isStatic: true, collisionFilter: {
-      group: 1,
-      mask: 0
-    }},
+    Constants.MAX_HEIGHT - obst2Height - obstEndHeight / 2,
+    obstEndWidth,
+    obstEndHeight,
+    {
+      isStatic: true,
+      collisionFilter: {
+        group: 1,
+        mask: 0,
+      },
+    },
   );
 
   let obst2 = Matter.Bodies.rectangle(
     x,
-    Constants.MAX_HEIGHT - 50 - obstTopHeight / 2,
+    Constants.MAX_HEIGHT - obst2Height / 2,
     Constants.OBSTACLE_WIDTH,
     obst2Height,
-    {isStatic: true, collisionFilter: {
-      group: 1,
-      mask: 0
-    }},
+    {
+      isStatic: true,
+      collisionFilter: {
+        group: 1,
+        mask: 0,
+      },
+    },
   );
 
-  Matter.World.add(world, [obst1, obst1Top, obst2, obst2Top]);
+  Matter.World.add(world, [obst1, obst1End, obst2, obst2End]);
 
   entities['obstacle' + (obstacles + 1)] = {
     body: obst1,
@@ -95,12 +107,12 @@ export const addObstaclesAtLocation = (x, world, entities) => {
   };
 
   entities['obstacle' + (obstacles + 1) + 'End'] = {
-    body: obst1Top,
+    body: obst1End,
     renderer: ObstacleEndTop,
   };
 
   entities['obstacle' + (obstacles + 2) + 'End'] = {
-    body: obst2Top,
+    body: obst2End,
     renderer: ObstacleEndBottom,
   };
 
@@ -121,9 +133,16 @@ const Physics = (entities, {touches, time, dispatch}) => {
         if (world.gravity.y === 0.0) {
           world.gravity.y = 1.2;
 
-          addObstaclesAtLocation((Constants.MAX_WIDTH * 2) - (Constants.OBSTACLE_WIDTH / 2), world, entities)
-          addObstaclesAtLocation((Constants.MAX_WIDTH * 3) - (Constants.OBSTACLE_WIDTH / 2), world, entities)
-
+          addObstaclesAtLocation(
+            Constants.MAX_WIDTH * 2 - Constants.OBSTACLE_WIDTH / 2,
+            world,
+            entities,
+          );
+          addObstaclesAtLocation(
+            Constants.MAX_WIDTH * 3 - Constants.OBSTACLE_WIDTH / 2,
+            world,
+            entities,
+          );
         }
         hadTouches = true;
         Matter.Body.setVelocity(cat, {x: cat.velocity.x, y: -10});
@@ -137,9 +156,33 @@ const Physics = (entities, {touches, time, dispatch}) => {
   });
 
   Object.keys(entities).forEach(key => {
-    if (key.indexOf('obstacle') === 0) {
+    if (key.indexOf('obst') === 0) {
       Matter.Body.translate(entities[key].body, {x: -2, y: 0});
-    } else if (key.indexOf('clouds') === 0) {
+
+      if (
+        key.indexOf('End') !== -1 &&
+        parseInt(key.replace('obst', '')) % 2 === 0
+      ) {
+        if (
+          entities[key].body.position.x <=
+          -1 * (Constants.OBSTACLE_WIDTH / 2)
+        ) {
+          let obstIndex = parseInt(key.replace('obst', ''));
+          delete entities['obst' + (obstIndex - 1) + 'End'];
+          delete entities['obst' + (obstIndex - 1)];
+          delete entities['obst' + obstIndex + 'End'];
+          delete entities['obst' + obstIndex];
+
+          addObstaclesAtLocation(
+            Constants.MAX_WIDTH * 2 - Constants.OBSTACLE_WIDTH / 2,
+            world,
+            entities,
+          );
+        }
+      }
+    }
+
+    if (key.indexOf('clouds') === 0) {
       if (entities[key].body.position.x <= (-1 * Constants.MAX_WIDTH) / 2) {
         Matter.Body.setPosition(entities[key].body, {
           x: Constants.MAX_WIDTH + Constants.MAX_WIDTH / 2,
