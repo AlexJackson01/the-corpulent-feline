@@ -10,7 +10,7 @@ import {useEffect} from 'react';
 
 const App = () => {
   useEffect(() => {
-    // start();
+    start();
   }, []);
 
   const start = async () => {

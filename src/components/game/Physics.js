@@ -146,7 +146,7 @@ export const addPowersAtLocation = (x, world, entities) => {
     label: 'PowerUp',
     collisionFilter: {
       group: 1,
-      mask: 0
+      mask: 0,
     },
   });
 
@@ -160,7 +160,7 @@ export const addPowersAtLocation = (x, world, entities) => {
       label: 'PowerUp',
       collisionFilter: {
         group: 1,
-        mask: 0
+        mask: 0,
       },
     },
   );
@@ -175,7 +175,7 @@ export const addPowersAtLocation = (x, world, entities) => {
       label: 'PowerUp',
       collisionFilter: {
         group: 1,
-        mask: 0
+        mask: 0,
       },
     },
   );
@@ -190,12 +190,12 @@ export const addPowersAtLocation = (x, world, entities) => {
       label: 'PowerUp',
       collisionFilter: {
         group: 1,
-        mask: 0
+        mask: 0,
       },
     },
   );
 
-  Matter.World.add(world, [power1, power1End, power2, power2End]);
+  Matter.World.add(world, [power1]);
 
   entities['powerUp' + (powers + 1)] = {
     body: power1,
@@ -268,15 +268,18 @@ const Physics = (entities, {touches, time, dispatch}) => {
 
   Matter.Events.on(engine, 'collisionStart', event => {
     if (event.pairs.some(pair => pair.bodyB.label == 'Obstacle')) {
-      dispatch({type: 'game_over'})
+      dispatch({type: 'game_over'});
     }
 
-    if (event.pairs.some(pair => pair.bodyB.label == 'PowerUp' && !pair.bodyB.scored)) {
-      event.pairs.some(pair => pair.bodyB.scored = true)
-      dispatch({type: 'power_up'})
+    if (
+      event.pairs.some(
+        pair => pair.bodyB.label == 'PowerUp' && !pair.bodyB.scored,
+      )
+    ) {
+      event.pairs.some(pair => (pair.bodyB.scored = true));
+      dispatch({type: 'power_up'});
     }
   });
-
 
   Object.keys(entities).forEach(key => {
     if (key.indexOf('powerUp') === 0 && entities.hasOwnProperty(key)) {
@@ -287,7 +290,7 @@ const Physics = (entities, {touches, time, dispatch}) => {
         parseInt(key.replace('powerUp', '')) % 2 === 0
       ) {
         if (
-          entities[key].body.position.x == cat.position.x &&
+          entities[key].body.position.x === cat.position.x &&
           !entities[key].scored
         ) {
           entities[key].scored = true;

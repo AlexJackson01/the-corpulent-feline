@@ -63,7 +63,9 @@ const Game = () => {
       Constants.MAX_HEIGHT,
       Constants.MAX_WIDTH,
       1,
-      {isStatic: true, collisionFilter: {
+      {isStatic: true, 
+        label: 'Obstacle',
+        collisionFilter: {
         group: 1,
         mask: 0
       }},
@@ -74,7 +76,9 @@ const Game = () => {
       0,
       Constants.MAX_WIDTH,
       1,
-      {isStatic: true, collisionFilter: {
+      {isStatic: true, 
+        label: 'Obstacle',
+        collisionFilter: {
         group: 1,
         mask: 0
       }},
@@ -136,7 +140,7 @@ const Game = () => {
               setScore(score => score + 1)
               break;
             case 'power_up':
-              setScore(score => score +5)
+              setScore(score => score + 5)
               break;
           }
         }}
